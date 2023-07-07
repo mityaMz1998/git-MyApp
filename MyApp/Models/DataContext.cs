@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MyApp
+namespace MyApp.Models
 {
     public class DataContext : DbContext
     {
@@ -8,7 +8,7 @@ namespace MyApp
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)/mssqllocaldb;Database=DbDataPerson;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-GJ5HJ6I;Database=DbDataPerson;Trusted_Connection=True;");
         }
     }
 }

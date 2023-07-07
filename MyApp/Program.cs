@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Diagnostics;
 using System.Data.Entity;
+using MyApp.Models;
+using MyApp.Tasks;
 
 namespace MyApp
 {
@@ -12,6 +14,11 @@ namespace MyApp
             DataContext db = new DataContext();
             Stopwatch stopWatch = new Stopwatch();
             args = Environment.GetCommandLineArgs();
+            ChangePerson cp = new ChangePerson();
+            GenerateRandomDateBirth generateRandomDateBirth = new GenerateRandomDateBirth();
+            GenerateRandomGender generateRandomGender = new GenerateRandomGender();
+            GenerateRandomNameF generateRandomNameF = new GenerateRandomNameF();
+            FormQuerySelectionAsync formQuerySelectionAsync = new FormQuerySelectionAsync();
 
             foreach (var arg in args)
             {
@@ -30,7 +37,7 @@ namespace MyApp
                             DateBirth = DateTime.Parse(args[5]),
                             Gender = args[6]
                         };
-                        AddPerson(db, p1);
+                        cp.AddPerson(db, p1);
                         break;
                     //3. Вывод всех строк с уникальным значением ФИО+дата, отсортированным по ФИО,
                         //вывести ФИО, Дату рождения, пол, кол-во полных лет.
@@ -41,7 +48,7 @@ namespace MyApp
                             .OrderBy(m => m.FIO)
                             .ToList();
                         foreach (var pp in result)
-                            Console.WriteLine($"{pp.FIO} - {pp.DateBirth} - {RandomGender()} - {DateTime.Now.Year - pp.DateBirth.Year}");
+                            Console.WriteLine($"{pp.FIO} - {pp.DateBirth} - {generateRandomGender.RandomGender()} - {DateTime.Now.Year - pp.DateBirth.Year}");
                         break;
                     //4. Заполнение автоматически 1000000 строк. Распределение пола в них должно быть относительно равномерным,
                     //начальной буквы ФИО также. Заполнение автоматически 100 строк в которых пол мужской и ФИО начинается с "F".
@@ -51,22 +58,22 @@ namespace MyApp
                         {
                             Person p2 = new Person() 
                             { 
-                                FIO = RandomNameF(true, random), 
-                                DateBirth = RandomDateBirth(random), 
+                                FIO = generateRandomNameF.RandomNameF(true, random), 
+                                DateBirth = generateRandomDateBirth.RandomDateBirth(random), 
                                 Gender = "Male" 
                             };
-                            AddPerson(db, p2);
+                            cp.AddPerson(db, p2);
                         }
 
                         for (int i = 100; i < 1000000; i++)
                         {
                             Person p3 = new Person()
                             {
-                                FIO = RandomNameF(false, random),
-                                DateBirth = RandomDateBirth(random),
-                                Gender = RandomGender()
+                                FIO = generateRandomNameF.RandomNameF(false, random),
+                                DateBirth = generateRandomDateBirth.RandomDateBirth(random),
+                                Gender = generateRandomGender.RandomGender()
                             };
-                            AddPerson(db, p3);
+                            cp.AddPerson(db, p3);
                         }
                         Console.WriteLine("Готово!");
                         break;
@@ -87,7 +94,7 @@ namespace MyApp
 
                         //6
                         stopWatch.Start();
-                        QuerySelectionAsync(db);
+                        formQuerySelectionAsync.QuerySelectionAsync(db);
                         stopWatch.Stop();
                         Console.WriteLine("После ускоренной выборки запроса в {0} мс", stopWatch.ElapsedMilliseconds);
                         break;
@@ -98,44 +105,6 @@ namespace MyApp
                         // или изменять данные, а выводить их для просмотра.
                 }
             }
-        }
-        static void AddPerson(DataContext dataContext, Person p)
-        {
-            dataContext.Persons.Add(p);
-            dataContext.SaveChanges();
-        }
-        static string RandomNameF(bool flg, Random r)
-        {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
-            var stringChars = new char[30];
-            Random random = new Random();
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-            if (flg == true)
-                return "F" + new String(stringChars);
-            else
-                return new String(stringChars);
-        }
-        static DateTime RandomDateBirth(Random r)
-        {
-            DateTime start = new DateTime(1900, 1, 1);
-            int range = (DateTime.Today - start).Days;
-            return start.AddDays(r.Next(range));
-        }        
-        static string RandomGender()
-        {
-            Random r = new Random();
-            string[] Genders = { "Male", "Female" };
-            return Genders[r.Next(0, 2)];
-        }
-        static async void QuerySelectionAsync(DataContext dt)
-        {
-            var result2 = await dt.Persons
-                        .Where(m => m.FIO.Contains("F") && m.Gender == "Male")
-                        .AsNoTracking()
-                        .ToListAsync();
-        }
+        }       
     }
 }
