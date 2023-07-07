@@ -24,12 +24,12 @@ namespace MyApp
             {
                 switch (arg)
                 {
-                    // 1. Создание таблицы с полями представляющими ФИО, дату рождения, пол.
+                    // 1. Creating a table with fields representing full name, date of birth, gender.
                     case "1":
                         db.Database.EnsureDeleted(); 
                         db.Database.EnsureCreated();
                         break;
-                    // 2. Создание записи. Использовать следующий формат:
+                    // 2. Creating a record. Use the following format:
                     case "2":
                         Person p1 = new Person()
                         {
@@ -39,8 +39,8 @@ namespace MyApp
                         };
                         cp.AddPerson(db, p1);
                         break;
-                    //3. Вывод всех строк с уникальным значением ФИО+дата, отсортированным по ФИО,
-                        //вывести ФИО, Дату рождения, пол, кол-во полных лет.
+                    //3. Output of all lines with a unique value of full name + date, sorted by full name,
+                    //output full name, date of birth, gender, number of full years.
                     case "3":
                         var result = db.Persons.AsEnumerable()
                             .GroupBy(d => new { d.FIO, d.DateBirth })
@@ -50,8 +50,8 @@ namespace MyApp
                         foreach (var pp in result)
                             Console.WriteLine($"{pp.FIO} - {pp.DateBirth} - {generateRandomGender.RandomGender()} - {DateTime.Now.Year - pp.DateBirth.Year}");
                         break;
-                    //4. Заполнение автоматически 1000000 строк. Распределение пола в них должно быть относительно равномерным,
-                    //начальной буквы ФИО также. Заполнение автоматически 100 строк в которых пол мужской и ФИО начинается с "F".
+                    //4. Filling in 1,000,000 rows automatically. The distribution of gender in them should be relatively uniform,
+                    //the initial letter of the full name as well. Filling in automatically 100 lines in which the gender is male and the full name begins with "F".
                     case "4":
                         Random random = new Random();
                         for (int i = 0; i < 100; i++)
@@ -77,11 +77,11 @@ namespace MyApp
                         }
                         Console.WriteLine("Готово!");
                         break;
-                    //5.  Результат выборки из таблицы по критерию: пол мужской, ФИО  начинается с "F".
-                    // Сделать замер времени выполнения.
-                    //6. Произвести определенные манипуляции над базой данных для ускорения запроса из пункта 5.
-                    // Убедиться, что время исполнения уменьшилось. Объяснить смысл произведенных действий.
-                    // Предоставить результаты замера до и после.
+                    //5.  The result of the selection from the table according to the criterion: male gender, full name begins with "F".
+                    //Make a measurement of the execution time.
+                    //6. Perform certain manipulations on the database to speed up the query from point 5.
+                    // Make sure that the execution time has decreased. Explain the meaning of the actions performed.
+                    // Provide the measurement results before and after.
                     case "5":
                         //5
                         stopWatch.Start();
@@ -98,11 +98,11 @@ namespace MyApp
                         stopWatch.Stop();
                         Console.WriteLine("После ускоренной выборки запроса в {0} мс", stopWatch.ElapsedMilliseconds);
                         break;
-                        // В этом пункте для ускорения запроса я применил специально
-                        // написанный мной асинхронный метод QuerySelectionAsync()
-                        // (в этом методе проходит тот же запрос, что в 5-ом пункте), также для дополнения
-                        // я применил метод AsNoTracking(), который позволяет не отслеживать
-                        // или изменять данные, а выводить их для просмотра.
+                        // At this point, to speed up the request, I applied specifically
+                        // the asynchronous method QuerySelectionAsync() written by me
+                        // (in this method the same query passes as in the 5th paragraph), also for the complement
+                        // I applied the AsNoTracking() method, which allows not to track
+                        // or change the data, and output them for viewing.
                 }
             }
         }       
