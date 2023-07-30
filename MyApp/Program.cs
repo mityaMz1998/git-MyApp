@@ -31,13 +31,14 @@ namespace MyApp
                         break;
                     // 2. Creating a record. Use the following format:
                     case "2":
-                        Person p1 = new Person()
-                        {
-                            FIO = args[2] + " " + args[3] + " " + args[4],
-                            DateBirth = DateTime.Parse(args[5]),
-                            Gender = args[6]
-                        };
-                        cp.AddPerson(db, p1);
+                        cp.AddPerson(db, args[2] + " " + args[3] + " " + args[4], DateTime.Parse(args[5]), args[6]);
+                        //Person p1 = new Person()
+                        //{
+                        //    FIO = args[2] + " " + args[3] + " " + args[4],
+                        //    DateBirth = DateTime.Parse(args[5]),
+                        //    Gender = args[6]
+                        //};
+                        //cp.AddPerson(db, p1);
                         break;
                     //3. Output of all lines with a unique value of full name + date, sorted by full name,
                     //output full name, date of birth, gender, number of full years.
@@ -56,24 +57,26 @@ namespace MyApp
                         Random random = new Random();
                         for (int i = 0; i < 100; i++)
                         {
-                            Person p2 = new Person() 
-                            { 
-                                FIO = generateRandomNameF.RandomNameF(true, random), 
-                                DateBirth = generateRandomDateBirth.RandomDateBirth(random), 
-                                Gender = "Male" 
-                            };
-                            cp.AddPerson(db, p2);
+                            cp.AddPerson(db, generateRandomNameF.RandomNameF(true, random), generateRandomDateBirth.RandomDateBirth(random), "Male");
+                            //Person p2 = new Person() 
+                            //{ 
+                            //    FIO = generateRandomNameF.RandomNameF(true, random), 
+                            //    DateBirth = generateRandomDateBirth.RandomDateBirth(random), 
+                            //    Gender = "Male" 
+                            //};
+                            //cp.AddPerson(db, p2);
                         }
 
                         for (int i = 100; i < 1000000; i++)
                         {
-                            Person p3 = new Person()
-                            {
-                                FIO = generateRandomNameF.RandomNameF(false, random),
-                                DateBirth = generateRandomDateBirth.RandomDateBirth(random),
-                                Gender = generateRandomGender.RandomGender()
-                            };
-                            cp.AddPerson(db, p3);
+                            cp.AddPerson(db, generateRandomNameF.RandomNameF(false, random), generateRandomDateBirth.RandomDateBirth(random), generateRandomGender.RandomGender());
+                            //Person p3 = new Person()
+                            //{
+                            //    FIO = generateRandomNameF.RandomNameF(false, random),
+                            //    DateBirth = generateRandomDateBirth.RandomDateBirth(random),
+                            //    Gender = generateRandomGender.RandomGender()
+                            //};
+                            //cp.AddPerson(db, p3);
                         }
                         Console.WriteLine("Готово!");
                         break;

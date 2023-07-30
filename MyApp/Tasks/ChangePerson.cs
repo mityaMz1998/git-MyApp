@@ -10,8 +10,14 @@ namespace MyApp.Tasks
 {
     public class ChangePerson : IChangePerson
     {
-        public void AddPerson(DataContext dataContext, Person p)
+        public void AddPerson(DataContext dataContext, string fio, DateTime dateBirth, string gender)
         {
+            Person p = new Person()
+            {
+                FIO = fio,
+                DateBirth = dateBirth,
+                Gender = gender
+            };
             dataContext.Persons.Add(p);
             dataContext.SaveChanges();
         }
