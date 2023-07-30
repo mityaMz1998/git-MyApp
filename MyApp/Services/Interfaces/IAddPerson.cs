@@ -9,6 +9,6 @@ namespace MyApp.Tasks.Interfaces
 {
     interface IAddPerson
     {
-        void AddNewPerson(DataContext dataContext, Person p);
+        void AddNewPerson(DataContext dataContext, string fio, DateTime dateBirth, string gender);
     }
 }
