@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MyApp.Tasks.Interfaces
 {
-    interface IChangePerson
+    interface IAddPerson
     {
-        void AddPerson(DataContext dataContext, string fio, DateTime dateBirth, string gender);
+        void AddNewPerson(DataContext dataContext, Person p);
     }
 }

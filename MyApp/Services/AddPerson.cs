@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace MyApp.Tasks
 {
-    public class ChangePerson : IChangePerson
+    public class AddPerson : IAddPerson
     {
-        public void AddPerson(DataContext dataContext, string fio, DateTime dateBirth, string gender)
+        public void AddNewPerson(DataContext dataContext, Person p)
         {
-            Person p = new Person()
-            {
-                FIO = fio,
-                DateBirth = dateBirth,
-                Gender = gender
-            };
+            //Person p = new Person()
+            //{
+            //    FIO = fio,
+            //    DateBirth = dateBirth,
+            //    Gender = gender
+            //};
+
+
             dataContext.Persons.Add(p);
             dataContext.SaveChanges();
         }

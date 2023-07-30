@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Data.Entity;
 using MyApp.Models;
 using MyApp.Tasks;
+using System.Reflection;
 
 namespace MyApp
 {
@@ -14,7 +15,7 @@ namespace MyApp
             DataContext db = new DataContext();
             Stopwatch stopWatch = new Stopwatch();
             args = Environment.GetCommandLineArgs();
-            AddPerson cp = new AddPerson();
+            AddPerson ap = new AddPerson();
             GenerateRandomDateBirth generateRandomDateBirth = new GenerateRandomDateBirth();
             GenerateRandomGender generateRandomGender = new GenerateRandomGender();
             GenerateRandomNameF generateRandomNameF = new GenerateRandomNameF();
@@ -31,7 +32,14 @@ namespace MyApp
                         break;
                     // 2. Creating a record. Use the following format:
                     case "2":
-                        cp.AddNewPerson(db, args[2] + " " + args[3] + " " + args[4], DateTime.Parse(args[5]), args[6]);
+                        //ap.AddNewPerson(db, args[2] + " " + args[3] + " " + args[4], DateTime.Parse(args[5]), args[6]);
+                        Person p = new Person()
+                        {
+                            FIO = args[2] + " " + args[3] + " " + args[4],
+                            DateBirth = DateTime.Parse(args[5]),
+                            Gender = args[6]
+                        };
+                        ap.AddNewPerson(db, p);
                         break;
                     //3. Output of all lines with a unique value of full name + date, sorted by full name,
                     //output full name, date of birth, gender, number of full years.
@@ -48,12 +56,12 @@ namespace MyApp
                     //the initial letter of the full name as well. Filling in automatically 100 lines in which the gender is male and the full name begins with "F".
                     case "4":
                         Random random = new Random();
-                        for (int i = 0; i < 100; i++)
-                            cp.AddNewPerson(db, generateRandomNameF.RandomNameF(true, random), generateRandomDateBirth.RandomDateBirth(random), "Male");
+                        //for (int i = 0; i < 100; i++)
+                        //    ap.AddNewPerson(db, generateRandomNameF.RandomNameF(true, random), generateRandomDateBirth.RandomDateBirth(random), "Male");
 
-                        for (int i = 100; i < 1000000; i++)
-                            cp.AddNewPerson(db, generateRandomNameF.RandomNameF(false, random), generateRandomDateBirth.RandomDateBirth(random), generateRandomGender.RandomGender());
-                        Console.WriteLine("Готово!");
+                        //for (int i = 100; i < 1000000; i++)
+                        //    ap.AddNewPerson(db, generateRandomNameF.RandomNameF(false, random), generateRandomDateBirth.RandomDateBirth(random), generateRandomGender.RandomGender());
+                        //Console.WriteLine("Готово!");
                         break;
                     //5.  The result of the selection from the table according to the criterion: male gender, full name begins with "F".
                     //Make a measurement of the execution time.
